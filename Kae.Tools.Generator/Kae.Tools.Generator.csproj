@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>Base framework for generator</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/kae-made/generator-framework</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kae-made/generator-framework</RepositoryUrl>
+    <Authors>Hiroshi Ota</Authors>
+    <Company>Knowledge &amp; Experience</Company>
+  </PropertyGroup>
+
+</Project>
