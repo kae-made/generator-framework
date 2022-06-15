@@ -1,0 +1,8 @@
+{
+  "R_SUBSUP": {
+    "subsupgen": {
+      "mode": "relationship",
+      "strength": "weak"
+    }
+  }
+}
