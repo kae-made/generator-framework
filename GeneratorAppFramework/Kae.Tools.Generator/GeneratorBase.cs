@@ -14,26 +14,26 @@ namespace Kae.Tools.Generator
         private static string CIMOOAofOOADomainName = "OOAofOOA";
         public string Version { get; set; }
 
-        private IList<ContextParam> contextParams;
+        protected IList<ContextParam> contextParams;
         public IList<ContextParam> ContextParams { get { return contextParams; } }
 
         private ColoringContext coloring;
         public ColoringRepository Coloring { get; set; }
 
-        private GenFolder genFolder;
+        protected GenFolder genFolder;
         public GenFolder GenFolder { get { return genFolder; } }
 
-        private string OOAofOOAModelFilePath;
-        private string MetaDataTypeDefFilePath;
-        private string BaseDataTypeDefFilePath;
-        private string DomainModelFilePath;
-        private string GenFolderPath;
+        protected string OOAofOOAModelFilePath;
+        protected string MetaDataTypeDefFilePath;
+        protected string BaseDataTypeDefFilePath;
+        protected string DomainModelFilePath;
+        protected string GenFolderPath;
 
-        private bool resolvedContext = false;
-        private bool loadedMetaModel = false;
-        private bool loadedDomainModels = false;
+        protected bool resolvedContext = false;
+        protected bool loadedMetaModel = false;
+        protected bool loadedDomainModels = false;
 
-        private XTUML.Tools.CIModelResolver.ConceptualInformationModelResolver modelResolver;
+        protected XTUML.Tools.CIModelResolver.ConceptualInformationModelResolver modelResolver;
 
         public static readonly string CPKeyOOAofOOAModelFilePath = "metamodel-path";
         public static readonly string CPKeyMetaDataTypeDefFilePath = "meta-datatype-path";
@@ -55,6 +55,8 @@ namespace Kae.Tools.Generator
 
         protected void CreateRequiredContext()
         {
+            contextParams = new List<ContextParam>();
+
             var ooaOfOOAModelFilePath = new PathSelectionParam(CPKeyOOAofOOAModelFilePath) { IsFolder = false };
             var domainModelFilePath = new PathSelectionParam(CPKeyDomainModelFilePath) { IsFolder = true };
             var metaDataTypeDefFilePath = new PathSelectionParam(CPKeyMetaDataTypeDefFilePath) { IsFolder = false };
@@ -73,7 +75,7 @@ namespace Kae.Tools.Generator
 
         public void ResolveContext()
         {
-            var requiredContextParams = new List<string>() { CPKeyOOAofOOAModelFilePath, CPKeyBaseDataTypeDefFilePaht, CPKeyDomainModelFilePath, CPKeyDomainModelFilePath };
+            var requiredContextParams = new List<string>() { CPKeyOOAofOOAModelFilePath, CPKeyBaseDataTypeDefFilePaht, CPKeyDomainModelFilePath, CPKeyGenFolderPath };
             foreach (var c in contextParams)
             {
                 if (c.ParamName == CPKeyOOAofOOAModelFilePath)

@@ -10,11 +10,11 @@
     <RepositoryUrl>https://github.com/kae-made/generator-framework</RepositoryUrl>
     <Authors>Hiroshi Ota</Authors>
     <Company>Knowledge &amp; Experience</Company>
-    <Version>2.0.0</Version>
+    <Version>2.0.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kae.XTUML.Tools.CIModelResolver" Version="1.0.0" />
+    <PackageReference Include="Kae.XTUML.Tools.CIModelResolver" Version="1.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="YamlDotNet" Version="11.2.1" />
   </ItemGroup>
