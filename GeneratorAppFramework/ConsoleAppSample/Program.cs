@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Kae.Utility.Logging;
+using System;
 using System.IO;
 
 namespace ConsoleAppSample
 {
     internal class Program
     {
+        static string version = "1.0.0";
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
 
-            var generator = new SampleGenerator();
+            var generator = new SampleGenerator(version,ConsoleLogger.CreateLogger());
 
             // generator.Coloring.Load("colors.yaml").Wait();
             // generator.Coloring.Load("colors.csv").Wait();

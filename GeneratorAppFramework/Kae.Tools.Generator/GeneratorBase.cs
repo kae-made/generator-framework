@@ -32,6 +32,7 @@ namespace Kae.Tools.Generator
         protected bool resolvedContext = false;
         protected bool loadedMetaModel = false;
         protected bool loadedDomainModels = false;
+        protected bool generatedEnvironment = false;
 
         protected XTUML.Tools.CIModelResolver.ConceptualInformationModelResolver modelResolver;
 
@@ -165,15 +166,44 @@ namespace Kae.Tools.Generator
         }
         protected abstract bool AdditionalWorkForDomainModels();
 
+        /// <summary>
+        /// Depricated methods. you should use GenerateEnvrionment and GenerateContent methods!
+        /// </summary>
+        [Obsolete("Please use GenerateEnvironment and GenerateContents.")]
         public void Generate()
         {
             if (!loadedDomainModels)
             {
                 throw new ApplicationException("This method should be called after calling LoadDomainModels");
             }
-            GenerateContents();
+            if (GenerateEnvironment())
+            {
+                GenerateContents();
+            }
         }
 
-        protected abstract void GenerateContents();
+        public bool GenerateEnvironment()
+        {
+            generatedEnvironment = false;
+            if (loadedDomainModels)
+            {
+                generatedEnvironment = GenerateEnvironmentYourOwn();
+            }
+            return generatedEnvironment;
+        }
+
+        public void GenerateContents()
+        {
+            if (generatedEnvironment)
+            {
+                GenerateContentsYourOwn();
+            }
+        }
+
+
+        protected abstract bool GenerateEnvironmentYourOwn();
+
+        protected abstract void GenerateContentsYourOwn();
+
     }
 }
