@@ -1,4 +1,6 @@
-﻿using Kae.Utility.Logging;
+﻿// Copyright (c) Knowledge & Experience. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using Kae.Utility.Logging;
 using System;
 using System.IO;
 
