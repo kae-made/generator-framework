@@ -29,6 +29,7 @@ namespace Kae.Tools.Generator
         protected string MetaDataTypeDefFilePath;
         protected string BaseDataTypeDefFilePath;
         protected string DomainModelFilePath;
+        protected string OALModelFilePath;
         protected string GenFolderPath;
 
         protected bool resolvedContext = false;
@@ -43,6 +44,7 @@ namespace Kae.Tools.Generator
         public static readonly string CPKeyBaseDataTypeDefFilePaht = "base-datatype-path";
         public static readonly string CPKeyDomainModelFilePath = "domainmodel-path";
         public static readonly string CPKeyGenFolderPath = "genpath";
+        public static readonly string CPKeyOALModelFilePath = "oal-path";
 
         public GeneratorBase(Logger logger, string version = null)
         {
@@ -65,10 +67,12 @@ namespace Kae.Tools.Generator
             var metaDataTypeDefFilePath = new PathSelectionParam(CPKeyMetaDataTypeDefFilePath) { IsFolder = false };
             var baseDataTypeDefFilePath = new PathSelectionParam(CPKeyBaseDataTypeDefFilePaht) { IsFolder = false };
             var genFolderPath = new PathSelectionParam(CPKeyGenFolderPath) { IsFolder = true };
+            var oalFilePath = new PathSelectionParam(CPKeyOALModelFilePath) { IsFolder = false };
             contextParams.Add(ooaOfOOAModelFilePath);
             contextParams.Add(domainModelFilePath);
             contextParams.Add(metaDataTypeDefFilePath);
             contextParams.Add(baseDataTypeDefFilePath);
+            contextParams.Add(oalFilePath);
             contextParams.Add(genFolderPath);
         }
 
@@ -99,6 +103,14 @@ namespace Kae.Tools.Generator
                     if (!string.IsNullOrEmpty(DomainModelFilePath))
                     {
                         requiredContextParams.Remove(CPKeyDomainModelFilePath);
+                    }
+                }
+                else if (c.ParamName == CPKeyOALModelFilePath)
+                {
+                    OALModelFilePath = ((PathSelectionParam)c).Path;
+                    if (!string.IsNullOrEmpty(OALModelFilePath))
+                    {
+                        requiredContextParams.Remove(CPKeyOALModelFilePath);
                     }
                 }
                 else if (c.ParamName == CPKeyBaseDataTypeDefFilePaht)
@@ -153,12 +165,21 @@ namespace Kae.Tools.Generator
         {
             if (loadedMetaModel)
             {
-                string[] domainModels = { BaseDataTypeDefFilePath, DomainModelFilePath };
-                modelResolver.LoadCIInstances(domainModels);
-                logger.LogInfo($"Loaded Domain Models.");
-                if (AdditionalWorkForDomainModels())
+                var domainModels = new List<string>();
+                domainModels.Add(BaseDataTypeDefFilePath);
+                domainModels.Add(DomainModelFilePath);
+                if (!string.IsNullOrEmpty(OALModelFilePath))
                 {
-                    loadedDomainModels = true;
+                    domainModels.Add(OALModelFilePath);
+                }
+                if (domainModels.Count >= 2)
+                {
+                    modelResolver.LoadCIInstances(domainModels.ToArray());
+                    logger.LogInfo($"Loaded Domain Models.");
+                    if (AdditionalWorkForDomainModels())
+                    {
+                        loadedDomainModels = true;
+                    }
                 }
             }
             else
@@ -166,6 +187,7 @@ namespace Kae.Tools.Generator
                 throw new ApplicationException("This method should be called after calling LoadMetaModel()!");
             }
         }
+
         protected abstract bool AdditionalWorkForDomainModels();
 
         /// <summary>
