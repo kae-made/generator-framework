@@ -10,7 +10,7 @@
     <RepositoryUrl>https://github.com/kae-made/generator-framework</RepositoryUrl>
     <Authors>Hiroshi Ota</Authors>
     <Company>Knowledge &amp; Experience</Company>
-    <Version>3.2.1</Version>
+    <Version>3.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
