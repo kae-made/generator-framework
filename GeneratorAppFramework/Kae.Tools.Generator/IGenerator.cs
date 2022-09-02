@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Knowledge & Experience. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using Kae.Tools.Generator.Coloring;
 using System;
 using System.Collections.Generic;
 
@@ -8,10 +9,13 @@ namespace Kae.Tools.Generator
     public interface IGenerator
     {
         public string Version { get; set; }
+        public string DomainName { get; }
 
         public IList<Context.ContextParam> ContextParams { get; }
 
         public ColoringRepository Coloring { get; set; }
+
+        public ColoringManager ColoringManager { get; }
 
         public utility.GenFolder GenFolder { get; }
 

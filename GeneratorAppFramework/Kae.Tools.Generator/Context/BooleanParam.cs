@@ -8,7 +8,7 @@ namespace Kae.Tools.Generator.Context
 {
     public class BooleanParam : ContextParam
     {
-        bool Value { get; set; }
+        public bool Value { get; set; }
         public BooleanParam(string paramName) : base(paramName)
         {
             ;

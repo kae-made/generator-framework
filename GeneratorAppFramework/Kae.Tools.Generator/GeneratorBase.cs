@@ -5,6 +5,7 @@ using Kae.Tools.Generator.utility;
 using Kae.Utility.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Kae.Tools.Generator
@@ -16,11 +17,15 @@ namespace Kae.Tools.Generator
         private static string CIMOOAofOOADomainName = "OOAofOOA";
         public string Version { get; set; }
 
+        public string DomainName { get { return CIMOOAofOOADomainName; } }
+
         protected IList<ContextParam> contextParams;
         public IList<ContextParam> ContextParams { get { return contextParams; } }
 
         private ColoringContext coloring;
         public ColoringRepository Coloring { get; set; }
+
+        public Coloring.ColoringManager ColoringManager { get { return coloringManager; } }
 
         protected GenFolder genFolder;
         public GenFolder GenFolder { get { return genFolder; } }
@@ -30,6 +35,7 @@ namespace Kae.Tools.Generator
         protected string BaseDataTypeDefFilePath;
         protected string DomainModelFilePath;
         protected string GenFolderPath;
+        protected string ColorFilePath;
 
         protected bool resolvedContext = false;
         protected bool loadedMetaModel = false;
@@ -38,11 +44,14 @@ namespace Kae.Tools.Generator
 
         protected XTUML.Tools.CIModelResolver.ConceptualInformationModelResolver modelResolver;
 
+        protected Coloring.ColoringManager coloringManager;
+
         public static readonly string CPKeyOOAofOOAModelFilePath = "metamodel-path";
         public static readonly string CPKeyMetaDataTypeDefFilePath = "meta-datatype-path";
         public static readonly string CPKeyBaseDataTypeDefFilePaht = "base-datatype-path";
         public static readonly string CPKeyDomainModelFilePath = "domainmodel-path";
         public static readonly string CPKeyGenFolderPath = "genpath";
+        public static readonly string CPKeyColoringFilePath = "coloring";
 
         public GeneratorBase(Logger logger, string version = null)
         {
@@ -65,11 +74,13 @@ namespace Kae.Tools.Generator
             var metaDataTypeDefFilePath = new PathSelectionParam(CPKeyMetaDataTypeDefFilePath) { IsFolder = false };
             var baseDataTypeDefFilePath = new PathSelectionParam(CPKeyBaseDataTypeDefFilePaht) { IsFolder = false };
             var genFolderPath = new PathSelectionParam(CPKeyGenFolderPath) { IsFolder = true };
+            var coloringFilePath = new PathSelectionParam(CPKeyColoringFilePath) { IsFolder = false };
             contextParams.Add(ooaOfOOAModelFilePath);
             contextParams.Add(domainModelFilePath);
             contextParams.Add(metaDataTypeDefFilePath);
             contextParams.Add(baseDataTypeDefFilePath);
             contextParams.Add(genFolderPath);
+            contextParams.Add(coloringFilePath);
         }
 
         protected abstract void CreateAdditionalContext();
@@ -117,6 +128,10 @@ namespace Kae.Tools.Generator
                         genFolder = new GenFolder() { BaseFolder = GenFolderPath };
                         requiredContextParams.Remove(CPKeyGenFolderPath);
                     }
+                }
+                else if (c.ParamName== CPKeyColoringFilePath)
+                {
+                    ColorFilePath = ((PathSelectionParam)c).Path;
                 }
             }
             if (requiredContextParams.Count > 0)
@@ -167,6 +182,24 @@ namespace Kae.Tools.Generator
             {
                 throw new ApplicationException("This method should be called after calling LoadMetaModel()!");
             }
+            if (loadedDomainModels)
+            {
+                SetupColoringManager();
+            }
+        }
+
+        private void SetupColoringManager()
+        {
+            coloringManager = new Coloring.ColoringManager(modelResolver.ModelRepository);
+            if (!string.IsNullOrEmpty(ColorFilePath))
+            {
+                using (var reader = new StreamReader(ColorFilePath))
+                {
+                    string colorSetting = reader.ReadToEnd();
+                    coloringManager.Resolve(CIMOOAofOOADomainName, colorSetting);
+
+                }
+            }
         }
 
         protected abstract bool AdditionalWorkForDomainModels();
@@ -181,6 +214,9 @@ namespace Kae.Tools.Generator
             {
                 throw new ApplicationException("This method should be called after calling LoadDomainModels");
             }
+
+            SetupColoringManager();
+            
             if (GenerateEnvironment())
             {
                 GenerateContents();

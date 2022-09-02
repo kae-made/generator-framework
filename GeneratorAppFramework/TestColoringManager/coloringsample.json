@@ -1,0 +1,29 @@
+{
+  "ColoringsForDomain": [
+    {
+      "domainname": "iot-device",
+      "dllfilepath": "C:\\Users\\kae-m\\source\\repos\\GeneratorAppFramework\\SampleColoringGenerator\\bin\\Debug\\net5.0\\SampleColoringGenerator.dll",
+      "colorings": [
+        {
+          "name": "bind-to-command",
+          "target": "ACT_ACT of O_TFR",
+          "identities": [ "class-key-letter", "operation-name" ],
+          "parameters": [ "device-type" ]
+        }
+      ]
+    }
+  ],
+  "Coloring": [
+    {
+      "domainname": "iot-device",
+      "coloringname": "bind-to-command",
+      "target": {
+        "class-key-letter": "PS",
+        "operation-name": "ExecuteCommand"
+      },
+      "parameters": {
+        "device-type": "factory-droid-c2d2"
+      }
+    }
+  ]
+}
