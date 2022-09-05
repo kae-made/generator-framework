@@ -16,5 +16,8 @@ namespace Kae.Tools.Generator.Context
         {
             this.ParamName = paramName;
         }
+
+        public abstract object GetValue();
+        public abstract void SetValue(object value);
     }
 }

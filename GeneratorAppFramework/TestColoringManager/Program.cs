@@ -41,7 +41,7 @@ namespace TestColoringManager
 
         public bool ResolveArgs(string[] args)
         {
-            var contextParams = generator.ContextParams;
+            var generatorContext = generator.GetContext();
             if (args.Length == 0)
             {
                 // ShowCommandline();
@@ -54,38 +54,45 @@ namespace TestColoringManager
             {
                 if (args[index] == "--metamodel")
                 {
-                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyOOAofOOAModelFilePath).First();
                     requiredOptions.Remove(args[index]);
-                    ((PathSelectionParam)cp).Path = args[++index];
+                    generatorContext.SetOptionValue(GeneratorBase.CPKeyOOAofOOAModelFilePath, (args[++index],false));
+//                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyOOAofOOAModelFilePath).First();
+  //                  ((PathSelectionParam)cp).Path = args[++index];
                 }
                 else if (args[index] == "--meta-datatype")
                 {
-                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyMetaDataTypeDefFilePath).First();
-                    ((PathSelectionParam)cp).Path = args[++index];
+                    generatorContext.SetOptionValue(GeneratorBase.CPKeyMetaDataTypeDefFilePath, (args[++index],false));
+////                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyMetaDataTypeDefFilePath).First();
+//                    ((PathSelectionParam)cp).Path = args[++index];
                 }
                 else if (args[index] == "--base-datatype")
                 {
-                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyBaseDataTypeDefFilePaht).First();
                     requiredOptions.Remove(args[index]);
-                    ((PathSelectionParam)cp).Path = args[++index];
+                    generatorContext.SetOptionValue(GeneratorBase.CPKeyBaseDataTypeDefFilePaht, (args[++index], false));
+//                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyBaseDataTypeDefFilePaht).First();
+//                    ((PathSelectionParam)cp).Path = args[++index];
                 }
                 else if (args[index] == "--domainmodel")
                 {
-                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyDomainModelFilePath).First();
+                    //var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyDomainModelFilePath).First();
                     requiredOptions.Remove(args[index]);
-                    ((PathSelectionParam)cp).Path = args[++index];
+                    string specifiedString = args[++index];
+                    generatorContext.SetOptionValue(GeneratorBase.CPKeyDomainModelFilePath, (specifiedString, !File.Exists(specifiedString)));
+//                    ((PathSelectionParam)cp).Path = args[++index];
                     // domainModelFilePath = args[index];
                 }
                 else if (args[index] == "--gen-folder")
                 {
-                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyGenFolderPath).First();
                     requiredOptions.Remove(args[index]);
-                    ((PathSelectionParam)cp).Path = args[++index];
+                    generatorContext.SetOptionValue(GeneratorBase.CPKeyGenFolderPath, (args[++index], true));
+//                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyGenFolderPath).First();
+//                    ((PathSelectionParam)cp).Path = args[++index];
                 }
                 else if (args[index] == "--coloring")
                 {
-                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyColoringFilePath).First();
-                    ((PathSelectionParam)cp).Path = args[++index];
+                    generatorContext.SetOptionValue(GeneratorBase.CPKeyColoringFilePath, (args[++index], false));
+//                    var cp = contextParams.Where(c => c.ParamName == GeneratorBase.CPKeyColoringFilePath).First();
+ //                   ((PathSelectionParam)cp).Path = args[++index];
                 }
                 else
                 {

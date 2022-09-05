@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using YamlDotNet.RepresentationModel;
 
-namespace Kae.Tools.Generator
+namespace Kae.Tools.Generator.Coloring.Generator
 {
     public class ColoringRepository
     {
@@ -82,7 +82,7 @@ namespace Kae.Tools.Generator
                 var yaml = new YamlStream();
                 yaml.Load(reader);
                 var root = (YamlMappingNode)yaml.Documents[0].RootNode;
-                foreach(var item in root.Children)
+                foreach (var item in root.Children)
                 {
                     string key = ((YamlScalarNode)item.Key).Value;
                     IList<ColoringContext> target = null;
@@ -95,12 +95,12 @@ namespace Kae.Tools.Generator
                         target = new List<ColoringContext>();
                         colors.Add(key, target);
                     }
-                    foreach(var citem in ((YamlMappingNode)item.Value).Children)
+                    foreach (var citem in ((YamlMappingNode)item.Value).Children)
                     {
-                        var cname= ((YamlScalarNode)citem.Key).Value;
+                        var cname = ((YamlScalarNode)citem.Key).Value;
                         var newContext = new ColoringContext() { Key = cname };
                         target.Add(newContext);
-                        foreach(var param in ((YamlMappingNode)citem.Value).Children)
+                        foreach (var param in ((YamlMappingNode)citem.Value).Children)
                         {
                             var pname = ((YamlScalarNode)param.Key).Value;
                             var pvalue = ((YamlScalarNode)param.Value).Value;
@@ -114,7 +114,7 @@ namespace Kae.Tools.Generator
 
         public async Task LoadCsv(string filePath)
         {
-            using(var stream = File.OpenRead(filePath))
+            using (var stream = File.OpenRead(filePath))
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -133,7 +133,8 @@ namespace Kae.Tools.Generator
                         int index = 0;
                         while (index < frags.Length)
                         {
-                            if (!string.IsNullOrEmpty(frags[index])){
+                            if (!string.IsNullOrEmpty(frags[index]))
+                            {
                                 if (index == 0)
                                 {
                                     currentKey = frags[index];
@@ -151,17 +152,17 @@ namespace Kae.Tools.Generator
                                 }
                                 else if (index == 1)
                                 {
-                                    currentContext = new ColoringContext() { Key= frags[index] };
+                                    currentContext = new ColoringContext() { Key = frags[index] };
                                     current.Add(currentContext);
                                     currentParamName = null;
                                 }
                                 else if (index == 2)
                                 {
-                                    currentParamName= frags[index];
+                                    currentParamName = frags[index];
                                 }
                                 else
                                 {
-                                    currentContext.Params.Add(currentParamName,frags[index]);
+                                    currentContext.Params.Add(currentParamName, frags[index]);
                                 }
                             }
                             index++;
@@ -175,36 +176,36 @@ namespace Kae.Tools.Generator
         {
             using (var stream = File.OpenRead(filePath))
             {
-                using(var reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream))
                 {
                     var json = await reader.ReadToEndAsync();
                     var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-                    foreach(var i in ((Newtonsoft.Json.Linq.JObject)deserialized).Children())
+                    foreach (var i in ((Newtonsoft.Json.Linq.JObject)deserialized).Children())
                     {
                         var key = ((Newtonsoft.Json.Linq.JProperty)i).Name;
                         IList<ColoringContext> currentColors = null;
                         if (Colors.ContainsKey(key))
                         {
-                            currentColors= Colors[key];
+                            currentColors = Colors[key];
                         }
                         else
                         {
-                            currentColors=new List<ColoringContext>();
+                            currentColors = new List<ColoringContext>();
                             Colors.Add(key, currentColors);
                         }
-                        foreach(var c in ((Newtonsoft.Json.Linq.JProperty)i).Children())
+                        foreach (var c in ((Newtonsoft.Json.Linq.JProperty)i).Children())
                         {
-                            foreach(var p in ((Newtonsoft.Json.Linq.JObject)c).Children())
+                            foreach (var p in ((Newtonsoft.Json.Linq.JObject)c).Children())
                             {
                                 var cname = ((Newtonsoft.Json.Linq.JProperty)p).Name;
                                 var currentColor = new ColoringContext() { Key = cname };
                                 currentColors.Add(currentColor);
-                                foreach(var aitem in ((Newtonsoft.Json.Linq.JProperty)p).Children())
+                                foreach (var aitem in ((Newtonsoft.Json.Linq.JProperty)p).Children())
                                 {
-                                    foreach(var a in ((Newtonsoft.Json.Linq.JObject)aitem).Children())
+                                    foreach (var a in ((Newtonsoft.Json.Linq.JObject)aitem).Children())
                                     {
                                         var aname = ((Newtonsoft.Json.Linq.JProperty)a).Name;
-                                        foreach(var v in ((Newtonsoft.Json.Linq.JProperty)a).Children())
+                                        foreach (var v in ((Newtonsoft.Json.Linq.JProperty)a).Children())
                                         {
                                             var vname = ((Newtonsoft.Json.Linq.JValue)v).Value.ToString();
                                             currentColor.Params.Add(aname, vname);

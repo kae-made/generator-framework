@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kae.Tools.Generator.Coloring
+namespace Kae.Tools.Generator.Coloring.DomainWeaving
 {
     public class ColoringManager
     {
@@ -23,7 +23,7 @@ namespace Kae.Tools.Generator.Coloring
 
         public ColoringManager(CIModelRepository repository)
         {
-            this.modelRepository = repository;
+            modelRepository = repository;
         }
 
         public bool Resolve(string domainNameOfUser, string setting)
@@ -100,7 +100,7 @@ namespace Kae.Tools.Generator.Coloring
                 if (typeOfEntry != null)
                 {
                     var methodOfEntry = typeOfEntry.GetMethod("GetGenerator");
-                    if(methodOfEntry != null)
+                    if (methodOfEntry != null)
                     {
                         return methodOfEntry.Invoke(null, new object[] { }) as IColoringGenerator;
                     }
@@ -112,7 +112,7 @@ namespace Kae.Tools.Generator.Coloring
         public bool HasColoring(CIClassDef target, out IList<ColoringForInstance> coloring)
         {
             coloring = new List<ColoringForInstance>();
-            foreach(var coloringSetting in coloringSettings)
+            foreach (var coloringSetting in coloringSettings)
             {
                 var generator = coloringGenerators[coloringSetting.Specification.DomainSpecification.DomainName];
                 if (generator.IsTarget(coloringSetting, target))
@@ -127,7 +127,7 @@ namespace Kae.Tools.Generator.Coloring
         public IList<GenerationResult> GenerateForColoring(IList<ColoringForInstance> colorings, string indent, string baseIndent)
         {
             var generations = new List<GenerationResult>();
-            foreach(var color in colorings)
+            foreach (var color in colorings)
             {
                 generations.Add(coloringGenerators[color.Specification.DomainSpecification.DomainName].Generate(color, indent, baseIndent));
             }

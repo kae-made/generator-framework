@@ -14,5 +14,17 @@ namespace Kae.Tools.Generator.Context
         {
 
         }
+
+        public override object GetValue()
+        {
+            return (Path: Path, IsFolder: IsFolder);
+        }
+
+        public override void SetValue(object value)
+        {
+            var settingValue = ((string Path, bool IsFolder))value;
+            Path = settingValue.Path;
+            IsFolder = settingValue.IsFolder;
+        }
     }
 }

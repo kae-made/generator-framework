@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kae.Tools.Generator" Version="4.2.3" />
+    <PackageReference Include="Kae.Tools.Generator" Version="6.0.1" />
   </ItemGroup>
 
 </Project>

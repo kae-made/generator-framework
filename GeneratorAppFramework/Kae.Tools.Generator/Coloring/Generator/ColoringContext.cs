@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kae.Tools.Generator
+namespace Kae.Tools.Generator.Coloring.Generator
 {
     public class ColoringContext
     {
         public string Key { get; set; }
-        private IDictionary<string,string> @params = new Dictionary<string,string>();
+        private IDictionary<string, string> @params = new Dictionary<string, string>();
         public IDictionary<string, string> Params { get { return @params; } }
     }
 }

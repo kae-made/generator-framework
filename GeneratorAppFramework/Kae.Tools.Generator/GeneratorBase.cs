@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Knowledge & Experience. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using Kae.Tools.Generator.Coloring.DomainWeaving;
+using Kae.Tools.Generator.Coloring.Generator;
 using Kae.Tools.Generator.Context;
 using Kae.Tools.Generator.utility;
 using Kae.Utility.Logging;
@@ -12,20 +14,16 @@ namespace Kae.Tools.Generator
 {
     public abstract class GeneratorBase : IGenerator
     {
-        private Logger logger;
-        private static string version = "0.0.1";
-        private static string CIMOOAofOOADomainName = "OOAofOOA";
+        protected Logger logger;
+        protected static string version = "0.0.1";
+        protected static string CIMOOAofOOADomainName = "OOAofOOA";
         public string Version { get; set; }
 
         public string DomainName { get { return CIMOOAofOOADomainName; } }
 
-        protected IList<ContextParam> contextParams;
-        public IList<ContextParam> ContextParams { get { return contextParams; } }
-
-        private ColoringContext coloring;
         public ColoringRepository Coloring { get; set; }
 
-        public Coloring.ColoringManager ColoringManager { get { return coloringManager; } }
+        public ColoringManager ColoringManagerForDomainWeaving { get { return coloringManager; } }
 
         protected GenFolder genFolder;
         public GenFolder GenFolder { get { return genFolder; } }
@@ -44,7 +42,7 @@ namespace Kae.Tools.Generator
 
         protected XTUML.Tools.CIModelResolver.ConceptualInformationModelResolver modelResolver;
 
-        protected Coloring.ColoringManager coloringManager;
+        protected ColoringManager coloringManager;
 
         public static readonly string CPKeyOOAofOOAModelFilePath = "metamodel-path";
         public static readonly string CPKeyMetaDataTypeDefFilePath = "meta-datatype-path";
@@ -65,9 +63,15 @@ namespace Kae.Tools.Generator
             CreateAdditionalContext();
         }
 
+        protected GeneratorContext generatorContext = new GeneratorContext();
+        public GeneratorContext GetContext()
+        {
+            return generatorContext;
+        }
+
         protected void CreateRequiredContext()
         {
-            contextParams = new List<ContextParam>();
+            // contextParams = new List<ContextParam>();
 
             var ooaOfOOAModelFilePath = new PathSelectionParam(CPKeyOOAofOOAModelFilePath) { IsFolder = false };
             var domainModelFilePath = new PathSelectionParam(CPKeyDomainModelFilePath) { IsFolder = true };
@@ -75,12 +79,18 @@ namespace Kae.Tools.Generator
             var baseDataTypeDefFilePath = new PathSelectionParam(CPKeyBaseDataTypeDefFilePaht) { IsFolder = false };
             var genFolderPath = new PathSelectionParam(CPKeyGenFolderPath) { IsFolder = true };
             var coloringFilePath = new PathSelectionParam(CPKeyColoringFilePath) { IsFolder = false };
-            contextParams.Add(ooaOfOOAModelFilePath);
-            contextParams.Add(domainModelFilePath);
-            contextParams.Add(metaDataTypeDefFilePath);
-            contextParams.Add(baseDataTypeDefFilePath);
-            contextParams.Add(genFolderPath);
-            contextParams.Add(coloringFilePath);
+            // contextParams.Add(ooaOfOOAModelFilePath);
+            // contextParams.Add(domainModelFilePath);
+            // contextParams.Add(metaDataTypeDefFilePath);
+            // contextParams.Add(baseDataTypeDefFilePath);
+            // contextParams.Add(genFolderPath);
+            // contextParams.Add(coloringFilePath);
+            generatorContext.AddOption(ooaOfOOAModelFilePath);
+            generatorContext.AddOption(domainModelFilePath);
+            generatorContext.AddOption(metaDataTypeDefFilePath);
+            generatorContext.AddOption(baseDataTypeDefFilePath);
+            generatorContext.AddOption(genFolderPath);
+            generatorContext.AddOption(coloringFilePath);
         }
 
         protected abstract void CreateAdditionalContext();
@@ -90,7 +100,7 @@ namespace Kae.Tools.Generator
         public void ResolveContext()
         {
             var requiredContextParams = new List<string>() { CPKeyOOAofOOAModelFilePath, CPKeyBaseDataTypeDefFilePaht, CPKeyDomainModelFilePath, CPKeyGenFolderPath };
-            foreach (var c in contextParams)
+            foreach (var c in generatorContext.Options)
             {
                 if (c.ParamName == CPKeyOOAofOOAModelFilePath)
                 {
@@ -149,7 +159,7 @@ namespace Kae.Tools.Generator
         {
             if (resolvedContext)
             {
-                modelResolver = new XTUML.Tools.CIModelResolver.ConceptualInformationModelResolver();
+                modelResolver = new XTUML.Tools.CIModelResolver.ConceptualInformationModelResolver(logger);
                 modelResolver.LoadOOAofOOA(MetaDataTypeDefFilePath, OOAofOOAModelFilePath);
                 logger.LogInfo($"Loaded ${OOAofOOAModelFilePath} as OOA of OOA model schmea");
                 if (AdditionalWorkForMetaModel())
@@ -190,7 +200,7 @@ namespace Kae.Tools.Generator
 
         private void SetupColoringManager()
         {
-            coloringManager = new Coloring.ColoringManager(modelResolver.ModelRepository);
+            coloringManager = new Coloring.DomainWeaving.ColoringManager(modelResolver.ModelRepository);
             if (!string.IsNullOrEmpty(ColorFilePath))
             {
                 using (var reader = new StreamReader(ColorFilePath))

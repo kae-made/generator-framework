@@ -6,12 +6,22 @@ using System.Text;
 
 namespace Kae.Tools.Generator.Context
 {
-    public class NumberParam:ContextParam
+    public class NumberParam : ContextParam
     {
         public int Value { get; set; }
         public NumberParam(string paramName) : base(paramName)
         {
 
+        }
+
+        public override object GetValue()
+        {
+            return Value;
+        }
+
+        public override void SetValue(object value)
+        {
+            Value = (int)value;
         }
     }
 }

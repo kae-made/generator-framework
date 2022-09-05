@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Knowledge & Experience. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
+using Kae.Tools.Generator.Context;
 using Kae.Utility.Logging;
 using System;
 using System.IO;
@@ -9,6 +10,7 @@ namespace ConsoleAppSample
     internal class Program
     {
         static string version = "1.0.0";
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
@@ -21,8 +23,10 @@ namespace ConsoleAppSample
             // generator.Coloring.Parse("R_SUBSUP", "@subsupgen:mode=extends,strength=weak;");
             // testDescripColors(generator);
 
-            var genContext = generator.ContextParams;
+            var genContext = generator.GetContext();
             // setup genContext
+            string bv = "true";
+            genContext.SetOptionValue(SampleGenerator.CPKeyBooleanOption, bool.Parse(bv));
             // metamodel, datatype for metamodel, genFolder, domain models, ...
             generator.ResolveContext();
             generator.LoadMetaModel();

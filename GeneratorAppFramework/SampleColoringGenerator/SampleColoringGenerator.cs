@@ -1,6 +1,7 @@
 ﻿using Kae.CIM;
 using Kae.CIM.MetaModel.CIMofCIM;
 using Kae.Tools.Generator.Coloring;
+using Kae.Tools.Generator.Coloring.DomainWeaving;
 using System;
 using System.Collections.Generic;
 using System.IO;

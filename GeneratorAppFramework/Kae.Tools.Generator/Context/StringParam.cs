@@ -9,9 +9,19 @@ namespace Kae.Tools.Generator.Context
     public class StringParam : ContextParam
     {
         public string Value { get; set; }
-        public StringParam (string paramName) : base(paramName)
+        public StringParam(string paramName) : base(paramName)
         {
 
+        }
+
+        public override object GetValue()
+        {
+            return Value;
+        }
+
+        public override void SetValue(object value)
+        {
+            Value = (string)value;
         }
     }
 }

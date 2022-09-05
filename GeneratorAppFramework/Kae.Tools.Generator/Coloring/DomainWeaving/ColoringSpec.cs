@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kae.Tools.Generator.Coloring
+namespace Kae.Tools.Generator.Coloring.DomainWeaving
 {
     public class ColoringSpec
     {

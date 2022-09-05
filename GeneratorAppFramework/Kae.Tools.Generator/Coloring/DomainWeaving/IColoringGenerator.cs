@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kae.Tools.Generator.Coloring
+namespace Kae.Tools.Generator.Coloring.DomainWeaving
 {
     public interface IColoringGenerator
     {
         public ColoringForDomainSpec GetColoringForDomainSpec();
 
-        public void FixTarget(ColoringForInstance coloring, CIModelRepository modelRepository, string domainNameOfUser, IDictionary<string,string> targetIdentities);
+        public void FixTarget(ColoringForInstance coloring, CIModelRepository modelRepository, string domainNameOfUser, IDictionary<string, string> targetIdentities);
 
         public bool IsTarget(ColoringForInstance coloring, CIClassDef target);
         public GenerationResult Generate(ColoringForInstance coloring, string indent, string baseIndent);

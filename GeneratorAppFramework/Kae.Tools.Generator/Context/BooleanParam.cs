@@ -13,5 +13,15 @@ namespace Kae.Tools.Generator.Context
         {
             ;
         }
+
+        public override object GetValue()
+        {
+            return Value;
+        }
+
+        public override void SetValue(object value)
+        {
+            Value = (bool)value;
+        }
     }
 }

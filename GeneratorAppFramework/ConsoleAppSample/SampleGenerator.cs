@@ -14,9 +14,16 @@ namespace ConsoleAppSample
 {
     internal class SampleGenerator : GeneratorBase
     {
+        public static string CPKeyOriginalOption = "original";
+        public static string CPKeyBooleanOption = "boolean";
+        int OriginalOptionValue = 0;
+        bool BooleanOptionValue = false;
+
         public SampleGenerator(string version, Logger logger) : base(logger, version)
         {
-            ;
+            // add options
+            GetContext().AddOption(new NumberParam(CPKeyOriginalOption) { Tips = "Original Option" });
+            GetContext().AddOption(new BooleanParam(CPKeyBooleanOption));
         }
 
         protected override void CreateAdditionalContext()
@@ -27,6 +34,8 @@ namespace ConsoleAppSample
         protected override bool AdditionalWorkForResloveContext()
         {
             Console.WriteLine("2. resolve specific contexts in ContextParams.");
+            OriginalOptionValue = (int)GetContext().GetOptionValue(CPKeyOriginalOption);
+            BooleanOptionValue = (bool)GetContext().GetOptionValue(CPKeyBooleanOption);
             return true;
         }
 
