@@ -10,6 +10,8 @@ namespace Kae.Tools.Generator.Coloring.DomainWeaving
     {
         public string DomainName { get; set; }
         public IDictionary<string, ColoringSpec> Specifications { get; set; }
+
+        public IList<string> ExternalPackages { get; set; }
     }
 
 }

@@ -24,7 +24,7 @@ namespace SampleColoringGenerator
 
         public SampleColoringGenerator()
         {
-            coloringForDomainSpec = new ColoringForDomainSpec() { DomainName = domainName, Specifications = new Dictionary<string, ColoringSpec>() };
+            coloringForDomainSpec = new ColoringForDomainSpec() { DomainName = domainName, Specifications = new Dictionary<string, ColoringSpec>(), ExternalPackages = new List<string>() };
 
             var bindToCommandColor = new ColoringSpec()
             {

@@ -88,6 +88,26 @@ namespace Kae.Tools.Generator.Coloring.DomainWeaving
             return true;
         }
 
+        public IList<string> GetExternalPackages()
+        {
+            var packages = new List<string>();
+
+            foreach(var generator in coloringGenerators)
+            {
+                var ps = generator.Value.GetColoringForDomainSpec().ExternalPackages;
+                foreach(var p in ps)
+                {
+                    var r = packages.Where(i => i == p).FirstOrDefault();
+                    if (r == null)
+                    {
+                        packages.Add(p);
+                    }
+                }
+            }
+
+            return packages;
+        }
+
         protected IColoringGenerator LoadGenerator(string dllFilePath)
         {
             var assembry = Assembly.LoadFrom(dllFilePath);
