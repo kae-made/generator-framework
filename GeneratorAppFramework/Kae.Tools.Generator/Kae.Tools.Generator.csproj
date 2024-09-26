@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Description>Base framework for generator</Description>
@@ -10,21 +10,21 @@
     <RepositoryUrl>https://github.com/kae-made/generator-framework</RepositoryUrl>
     <Authors>Hiroshi Ota</Authors>
     <Company>Knowledge &amp; Experience</Company>
-    <Version>6.5.0</Version>
+    <Version>6.5.1</Version>
     <Copyright>Copyright (c) Knowledge &amp; Experience. All rights reserved.</Copyright>
     <PackageIcon>kae-log-no-chart-128.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\OneDrive\画像\kae-log-no-chart-128.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <PackageReference Include="Kae.XTUML.Tools.CIModelResolver" Version="2.3.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kae.XTUML.Tools.CIModelResolver" Version="2.3.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <None Update="kae-log-no-chart-128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
